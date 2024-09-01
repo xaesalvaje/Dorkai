@@ -1,14 +1,19 @@
 from dork_generator import generate_dorks
 from search_executor import execute_search
-from anonymity_handler import use_tor_proxy, rotate_proxy
+from anonymity_handler import fetch_proxies_from_github, rotate_proxy, use_tor_proxy
 from file_manager import download_files, organize_files
 from logger import log_results
 from data_filter import filter_recent_data
 import time
 
 def main():
-    # Set up proxies
-    proxies = rotate_proxy('proxies.txt')
+    # Fetch proxies from GitHub
+    proxies_list = fetch_proxies_from_github()
+    
+    # Rotate to select one proxy
+    proxies = rotate_proxy(proxies_list)
+    
+    # Set up Tor proxy (if needed)
     tor_proxy = use_tor_proxy()
     
     # Generate dorks
